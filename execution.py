@@ -18,12 +18,11 @@ class Execution(object):
             "Authorization": "Bearer " + self.access_token
         }
         params = urllib.parse.urlencode({
-            "instrument": event.instrument,
-            "units": event.units,
-            "type": event.order_type,
-            "side": event.side
+            "instrument" : event.instrument,
+            "units" : event.units,
+            "type" : event.order_type,
+            "side" : event.side
         })
-
         self.conn.request(
             "POST",
             "/v1/accounts/%s/orders" % str(self.account_id),
@@ -31,6 +30,4 @@ class Execution(object):
         )
         response = self.conn.getresponse().read()
         print(response)
-
-
 
