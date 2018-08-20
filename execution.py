@@ -1,5 +1,5 @@
 import http.client
-import urllib.request, urllib.parse, urllib.error
+import requests
 
 
 class Execution(object):
@@ -17,17 +17,15 @@ class Execution(object):
             "Content-Type": "application/x-www-form-urlencoded",
             "Authorization": "Bearer " + self.access_token
         }
-        params = urllib.parse.urlencode({
-            "instrument" : event.instrument,
-            "units" : event.units,
-            "type" : event.order_type,
-            "side" : event.side
-        })
-        self.conn.request(
-            "POST",
-            "/v1/accounts/%s/orders" % str(self.account_id),
-            params, headers
-        )
-        response = self.conn.getresponse().read()
+        params = [
+            ('instrument', event.instrument),
+            ('units', event.units),
+            ('side', event.side),
+            ('type', event.order_type),
+        ]
+        response = requests.post('https://api-fxpractice.oanda.com/v1/accounts/%s/orders' % str(self.account_id),
+                                 headers=headers,
+                                 data=params)
+
         print(response)
 
